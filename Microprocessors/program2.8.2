@@ -1,0 +1,42 @@
+	lhld 2100h
+	mov b, h
+	mov c, l
+	lhld 2104h
+	xchg
+	lhld 2102h
+	mov a, h
+	cmp d
+	jc ss
+	jnz b1
+	mov a, l
+	cmp e
+	jc ss
+b1:	mov a, b
+	ora c
+	jz end
+	mov a, m
+	xchg
+	mov m, a
+	xchg
+	inx d
+	inx h
+	dcx b
+	jmp b1
+ss:	dad b
+	xchg
+	dad b
+	xchg
+	dcx h
+	dcx d
+b2:	mov a, b
+	ora c
+	jz end
+	mov a, m
+	xchg
+	mov m, a
+	xchg
+	dcx d
+	dcx h
+	dcx b
+	jmp b2
+end:	hlt

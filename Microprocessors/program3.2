@@ -1,0 +1,88 @@
+	lxi sp, 2700h
+upper1:	lxi h, 2000h
+	mvi d, 0eh
+loop1:	call subs1
+	push h
+	call rdkbd
+	pop h
+	cpi 02h
+	jz upper2
+	dcr d
+	jnz loop1
+	jmp upper1
+subs1:	push d
+	mvi a, 00h
+	mov b, a
+	push h
+ 	call dsply
+	pop h
+	inx h
+	push h
+	inx h
+	inx h
+	inx h
+	mvi a, 01h
+	call dsply
+	lxi d, 0ffffh
+	call delay
+	pop h
+	pop d
+	ret
+
+upper2:	lxi h, 200eh
+	mvi d, 0eh
+loop2:	call subs2
+	push h
+	call rdkbd
+	pop h
+	cpi 01h
+	jz upper1
+	dcr d
+	jnz loop2
+	jmp upper2
+subs2:	push d
+	mvi a, 00h
+	mov b, a
+	push h
+ 	call dsply
+	pop h
+	push h
+	inx h
+	inx h
+	inx h
+	inx h
+	mvi a, 01h
+	call dsply
+	lxi d, 0ffffh
+	call delay
+	pop h
+	dcx h
+	pop d
+	ret
+
+delay:	ret
+
+rdkbd:	lxi h, 2700h
+	mov a, m
+	ret
+
+dsply:	cpi 00h
+	jnz df
+	mov a, m
+	sta 2701h
+	inx h
+	mov a, m
+	sta 2702h
+	inx h
+	mov a, m
+	sta 2703h
+	inx h
+	mov a, m
+	sta 2704h
+	ret
+df:	mov a, m
+	sta 2705h
+	inx h
+	mov a, m
+	sta 2706h
+	ret

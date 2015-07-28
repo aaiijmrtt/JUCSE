@@ -1,0 +1,31 @@
+	lda 2040h
+	mov b, a
+	ani 80h
+	jz pos1
+	mov a, b
+	xri 80h
+	cma
+	inr a
+	mov b, a
+pos1:	lda 2041h
+	mov c, a
+	ani 80h
+	jnz pos2
+	mov a, c
+	cma
+	inr a
+	jmp next
+pos2:	mov a, c
+	xri 80h
+next:	add b
+	mov e, a
+	ani 80h
+	jz end
+	mov a, e
+	cma
+	inr a
+	xri 80h
+	mov e, a
+end:	mov a, e
+	sta 2042h
+	hlt

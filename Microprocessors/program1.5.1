@@ -1,0 +1,20 @@
+	lda 2000h
+	mov b, a
+	mov c, b
+outer:	mov d, b
+	dcr d
+	lxi h, 2001h
+inner:	mov e, m
+	inx h
+	mov a, m
+	cmp e
+	jnc skip
+	mov m, e
+	dcx h
+	mov m, a
+	inx h
+skip:	dcr d
+	jnz inner
+	dcr c
+	jnz outer
+	hlt

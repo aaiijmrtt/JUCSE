@@ -1,0 +1,15 @@
+	lxi h, 2000h
+	mvi m, 01h
+	inx h
+	mvi m, 01h
+loop:	mov b, m
+	dcx h
+	mov a, m
+	add b
+	inx h
+	inx h
+	mov m, a
+	mov a, l
+	cpi 09h
+	jnz loop
+	hlt

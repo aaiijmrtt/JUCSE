@@ -1,0 +1,13 @@
+lda 2000h
+mov b, a
+lda 2001h
+mov c, a
+xra b
+mov d, a
+sta 2002h
+ana c
+sta 2003h
+mov a, d
+ana b
+sta 2004h
+hlt

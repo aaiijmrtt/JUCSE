@@ -1,0 +1,48 @@
+	lda 2041h
+	mov b, a
+	lda 2040h
+	mov c, a
+	ani 80h
+	jz pf
+	mov a, c
+	xri 80h
+	mov c, a
+	mov a, b
+	ani 80h
+	jz nfps
+	mov a, b
+	xri 80h
+	mov b, a
+	mov a, c
+	cmp b
+	jc nfltns
+	sub b
+	ori 80h
+	jmp end
+nfltns:	mov a, b
+	sub c
+	jmp end
+nfps:	mov a, c
+	add b
+	ori 80h
+	jmp end
+pf:	mov a, b
+	ani 80h
+	jz pfps
+	mov a, b
+	xri 80h
+	mov b, a
+	add c
+	jmp end
+pfps:	mov a, c
+	cmp b
+	jc pfltps
+	mov a, c
+	sub b
+	jmp end
+pfltps:	mov a, b
+	sub c
+	ori 80h
+	jmp end
+end:	sta 2042h
+	hlt

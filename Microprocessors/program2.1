@@ -1,0 +1,11 @@
+	lda 2000h
+	ana a
+	jz z
+	jp p
+	mvi a, 02h
+	jmp end
+p:	mvi a, 01h
+	jmp end
+z:	mvi a, 00h
+end:	sta 2100h
+	hlt

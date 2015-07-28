@@ -1,0 +1,25 @@
+	mvi a, 0bh
+	sim
+	ei
+	mvi a, 0ch
+	out 19
+	xra a
+	sta 27f6h
+	sta 2200h
+	mov b, a
+	call moddt
+loop:	jmp loop
+isr:	lda 2200h
+	adi 01h
+	daa
+	sta 27f6h
+	sta 2200h
+	mvi b, 00h
+	call moddt
+	lxi d, 0ffffh
+	call delay
+	ei
+	ret
+
+moddt:	ret
+delay:	ret

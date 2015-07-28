@@ -1,0 +1,31 @@
+	mvi h, 00h
+	lda 2000h
+	ani 0fh
+	mov c, a
+	lda 2000h
+	ani 0f0h
+	mov b, a
+	lda 2001h
+	ani 0fh
+	mov e, a
+	lda 2001h
+	ani 0f0h
+	mov d, a
+	mov a, c
+	add e
+	cpi 0ah
+	jc skip1
+	adi 06h
+	ani 0fh
+	mvi h, 010h
+skip1:	mov l, a
+	mov a, b
+	add h
+	add d
+	jc skip2
+	cpi 0a0h
+	jc skip3
+skip2:	adi 60h
+skip3:	ora l
+	sta 2002h
+	hlt

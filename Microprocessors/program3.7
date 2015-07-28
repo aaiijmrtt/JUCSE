@@ -1,0 +1,66 @@
+	lxi sp, 2700h
+	mvi a, 00h
+	mvi b, 00h
+	sta 2212h
+	lxi h, 2200h
+	call dsply
+	mvi a, 01h
+	lxi h, 2204h
+	call dsply
+	call rdkbd
+	cpi 01h
+	jz m1
+	mvi a, 01h
+	sta 2212h
+m1:	call rdkbd
+	cpi 02h
+	jz m2
+	mvi a, 01h
+	sta 2212h
+m2:	call rdkbd
+	cpi 03h
+	jz m3
+	mvi a, 01h
+	sta 2212h
+m3:	lda 2212h
+	cpi 00h
+	jnz err
+	lxi h, 2206h
+	mvi a, 00h
+	call dsply
+	mvi a, 01h
+	lxi h, 220ah
+	call dsply
+	hlt
+err:	lxi h, 220ch
+	mvi a, 00h
+	call dsply
+	mvi a, 01h
+	lxi h, 2210h
+	call dsply
+	hlt
+
+rdkbd:	lxi h, 2700h
+	mov a, m
+	ret
+
+dsply:	cpi 00h
+	jnz df
+	mov a, m
+	sta 2701h
+	inx h
+	mov a, m
+	sta 2702h
+	inx h
+	mov a, m
+	sta 2703h
+	inx h
+	mov a, m
+	sta 2704h
+	ret
+df:	mov a, m
+	sta 2705h
+	inx h
+	mov a, m
+	sta 2706h
+	ret

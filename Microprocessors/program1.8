@@ -1,0 +1,19 @@
+	lxi b, 0000h
+	lxi d, 0040h
+	lxi h, 2050h
+loop:	mov a, l
+	cmp e
+	jz end
+	mov a, m
+	ani 0fh
+	jnz skip1
+	inr b
+skip1:	mov a, m
+	ani 0f0h
+	jnz skip2
+	inr b
+skip2:	dcx h
+	jmp loop
+end:	mov a, b
+	sta 2040h
+	hlt

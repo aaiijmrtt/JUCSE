@@ -1,0 +1,21 @@
+	lxi h, 2100h
+	mvi d, 00h
+loop:	mov a, d
+	cpi 00h
+	jnz one
+	mvi m, 55h
+	inr d
+	jmp end
+one:	mov a, d
+	cpi 01h
+	jnz two
+	mvi m, 00h
+	inr d
+	jmp end
+two:	mvi m, 0aah
+	mvi d, 00h
+end:	inx h
+	mov a, l
+	cpi 00h
+	jnz loop
+	hlt

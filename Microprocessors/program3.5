@@ -1,0 +1,61 @@
+	lxi sp, 2700h
+	mvi a, 00h
+	sta 2201h
+	sta 2202h
+	sta 2203h
+	sta 2204h
+lp:	mvi b, 04h
+loop:	call rdkbd
+	mvi h, 22h
+	mov l, b
+	mov m, a
+	call avg
+	dcr b
+	jnz loop
+	jmp lp
+avg:	lda 2201h
+	mov d, a
+	lda 2202h
+	mov e, a
+	lda 2203h
+	mov h, a
+	lda 2204h
+	add h
+	add e
+	add d
+	ani 0fch
+	rrc
+	rrc
+	sta 2205h
+	lxi h, 2201h
+	mvi a, 00h
+	call dsply
+	lxi h, 2205h
+	mvi a, 01h
+	call dsply
+	ret
+
+rdkbd:	lxi h, 2700h
+	mov a, m
+	ret
+
+dsply:	cpi 00h
+	jnz df
+	mov a, m
+	sta 2701h
+	inx h
+	mov a, m
+	sta 2702h
+	inx h
+	mov a, m
+	sta 2703h
+	inx h
+	mov a, m
+	sta 2704h
+	ret
+df:	mov a, m
+	sta 2705h
+	inx h
+	mov a, m
+	sta 2706h
+	ret

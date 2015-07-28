@@ -1,0 +1,95 @@
+	lxi d, 2001h
+	lxi h, 2000h
+	mvi b, 00h
+	lda 2000h
+	mov c, a
+	dad b
+	lxi sp, 3000h
+	call qsort
+	hlt
+
+; de contains lb
+; hl contains ub
+; quick sorts addresses[lb, ub]
+; leaves registers intact
+
+qsort:	push psw
+	push b
+	push d
+	push h
+	mov a, h
+	cmp d
+	jc endq
+	mov a, l
+	cmp e
+	jc endq
+	jz endq
+	call part ; partitions if lb < ub
+
+	push h
+	mov h, b
+	mov l, c
+	dcx h
+	call qsort ; call quick sort on [lb, p-1]
+
+	pop h
+	push d
+	mov d, b
+	mov e, c
+	inx d
+	call qsort ; call quick sort on [p+1, ub]
+
+	pop d
+endq:	pop h
+	pop d
+	pop b
+	pop psw
+	ret
+
+; de contains lb
+; hl contains ub
+; partitions addresses[lb, ub] and returns pivot in bc
+; leaves registers intact
+
+part:	push psw
+	push d
+	push h
+	mov b, d ; copy lb to bc
+	mov c, e ; copy lb to bc
+	call xbh ; send pivot value to end of array
+	mov d, m ; copy pivot value in d
+	dcx h ; ub -= 1
+loop:	mov a, h
+	cmp b
+	jc endp
+	mov a, l
+	cmp c
+	jc endp ; if lb <= ub
+	ldax b ; load array[lb]
+	cmp d ; compare with pivot value
+	jc next
+	mov a, d ; move pivot in accumulator
+	call xbh
+	dcx h
+	mov d, a
+	jmp loop
+next:	inx b
+	jmp loop
+endp:	pop h
+	call xbh
+	pop d
+	pop psw
+	ret
+
+; exchanges contents of addresses stored in b and h
+; leave registers intact
+
+xbh:	push psw
+	mov a, m
+	push psw
+	ldax b
+	mov m, a
+	pop psw
+	stax b
+	pop psw
+	ret

@@ -1,0 +1,12 @@
+	lxi h, 2100h
+	mov a, l
+loop:	ani 01h
+	jz ev
+	mvi m, 0aah
+	jmp od
+ev:	mvi m, 55h
+od:	inx h
+	mov a, l
+	cpi 00h
+	jnz loop
+	hlt

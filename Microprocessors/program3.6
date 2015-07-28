@@ -1,0 +1,154 @@
+	lxi sp, 2700h
+start:	mvi a, 00h
+	mvi b, 0eh
+	lxi h, 2100h
+loop:	mov m, a
+	inx h
+	dcr b
+	jnz loop
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2100h
+	lxi h, 2100h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2101h
+	lxi h, 2100h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2102h
+	lxi h, 2100h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2103h
+	lxi h, 2100h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2104h
+
+	mov b, a
+	lda 2100h
+	add b
+	cpi 0ah
+	jc l1
+	sbi 0ah
+	sta 2108h
+	mvi a, 01h
+	sta 2109h
+	jmp m1
+l1:	sta 2108h
+m1:	lxi h, 2104h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2105h
+
+	mov b, a
+	lda 2101h
+	add b
+	mov b, a
+	lda 2109h
+	add b
+	cpi 0ah
+	jc l2
+	sbi 0ah
+	sta 2109h
+	mvi a, 01h
+	sta 210ah
+	jmp m2
+l2:	sta 2109h
+m2:	lxi h, 2104h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2106h
+
+	mov b, a
+	lda 2102h
+	add b
+	mov b, a
+	lda 210ah
+	add b
+	cpi 0ah
+	jc l3
+	sbi 0ah
+	sta 210ah
+	mvi a, 01h
+	sta 210bh
+	jmp m3
+l3:	sta 210ah
+m3:	lxi h, 2104h
+	mvi a, 00h
+	call dsply
+	call rdkbd
+	cpi 0ah
+	jnc start
+	sta 2107h
+
+	mov b, a
+	lda 2103h
+	add b
+	mov b, a
+	lda 210bh
+	add b
+	cpi 0ah
+	jc l4
+	sbi 0ah
+	sta 210bh
+	mvi a, 01h
+	sta 210ch
+	jmp m4
+l4:	sta 210bh
+m4:	lxi h, 2104h
+	mvi a, 00h
+	call dsply
+
+	lxi h, 2108h
+	mvi a, 00h
+	call dsply
+	lxi h, 210ch
+	mvi a, 01h
+	call dsply
+	hlt
+
+rdkbd:	lxi h, 2700h
+	mov a, m
+	ret
+
+dsply:	cpi 00h
+	jnz df
+	mov a, m
+	sta 2701h
+	inx h
+	mov a, m
+	sta 2702h
+	inx h
+	mov a, m
+	sta 2703h
+	inx h
+	mov a, m
+	sta 2704h
+	ret
+df:	mov a, m
+	sta 2705h
+	inx h
+	mov a, m
+	sta 2706h
+	ret

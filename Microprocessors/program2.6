@@ -1,0 +1,42 @@
+	mvi c, 00h
+	lxi d, 0000h
+	lhld 2000h
+	xchg
+	lhld 2002h
+	dad d
+	xchg
+	jnc skip1
+	inr c
+skip1:	lhld 2004h
+	dad d
+	xchg
+	jnc skip2
+	inr c
+skip2:	lhld 2006h
+	dad d
+	xchg
+	jnc skip3
+	inr c
+skip3:	mov a, e
+	rrc
+	rrc
+	mov e, a
+	mov a, d
+	ani 03h
+	rrc
+	rrc
+	ora e
+	mov e, a
+	mov a, d
+	rrc
+	rrc
+	mov d, a
+	mov a, c
+	ani 03h
+	rrc
+	rrc
+	ora d
+	mov d, a
+	xchg
+	shld 2008h
+	hlt

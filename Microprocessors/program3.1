@@ -1,0 +1,50 @@
+	lxi sp, 2700h
+loop:	lxi h, 2000h
+	call show
+	lxi d, 0ffffh
+	call delay
+	lxi h, 2006h
+	call show
+	lxi d, 0ffffh
+	call delay
+	jmp loop
+show:	mvi b, 00h
+	mvi a, 00h
+	push h
+	call dsply
+	pop h
+	inx h
+	inx h
+	inx h
+	inx h
+	mvi b, 00h
+	mvi a, 01h
+	call dsply
+	ret
+
+delay:	ret
+
+rdkbd:	lxi h, 2700h
+	mov a, m
+	ret
+
+dsply:	cpi 00h
+	jnz df
+	mov a, m
+	sta 2701h
+	inx h
+	mov a, m
+	sta 2702h
+	inx h
+	mov a, m
+	sta 2703h
+	inx h
+	mov a, m
+	sta 2704h
+	ret
+df:	mov a, m
+	sta 2705h
+	inx h
+	mov a, m
+	sta 2706h
+	ret

@@ -1,0 +1,45 @@
+	lda 2500h
+	mov b, a
+	lda 2501h
+	mov c, a
+	add b
+	sta 2520h
+	mov a, b
+	sub c
+	sta 2521h
+	mov a, b
+	ora c
+	sta 2522h
+	cma
+	sta 2526h
+	mov a, b
+	ana c
+	sta 2523h
+	cma
+	sta 2525h
+	mov a, b
+	xra c
+	sta 2524h
+	lxi h, 0000h
+	mvi d, 00h
+	mov e, b
+	mov a, e
+	cpi 00h
+	jz mend
+mbegin:	dad d
+	dcr c
+	jnz mbegin
+mend:	shld 2527h
+	lda 2501h
+	mov c, a
+	mvi l, 00h
+	mov a, b
+dbegin:	cmp c
+	jc dend
+	inr l
+	sub c
+	jmp dbegin
+dend:	sta 2529h
+	mov a, l
+	sta 252ah
+	hlt

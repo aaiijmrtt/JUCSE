@@ -1,0 +1,49 @@
+	lhld 2102h
+	mov b, h
+	mov c, l
+	lhld 2104h
+	xchg
+	lhld 2100h
+	mov a, c
+	sub l
+	mov c, a
+	mov a, b
+	sbb h
+	mov b, a
+	inx b
+	mov a, h
+	cmp d
+	jc skip
+	jnz loop1
+	mov a, l
+	cmp e
+	jc skip
+loop1:	mov a, b
+	ora c
+	jz end
+	mov a, m
+	xchg
+	mov m, a
+	xchg
+	inx d
+	inx h
+	dcx b
+	jmp loop1
+skip:	dad b
+	xchg
+	dad b
+	xchg
+	dcx h
+	dcx d
+loop2:	mov a, b
+	ora c
+	jz end
+	mov a, m
+	xchg
+	mov m, a
+	xchg
+	dcx d
+	dcx h
+	dcx b
+	jmp loop2
+end:	hlt

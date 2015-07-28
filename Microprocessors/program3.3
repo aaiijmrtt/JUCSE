@@ -1,0 +1,45 @@
+	mvi a, 00h
+	sta 2000h
+start:	di
+	lda 2000h
+	inr a
+	sta 2000h
+	call dsply
+	lxi d, 0ffffh
+	call delay
+	mvi a, 08h
+	sim
+	ei
+	jmp start
+isr:	mvi a, 0eh
+	sim
+	ei
+	call rdkbd
+	ret
+
+delay:	ret
+
+rdkbd:	lxi h, 2700h
+	mov a, m
+	ret
+
+dsply:	cpi 00h
+	jnz df
+	mov a, m
+	sta 2701h
+	inx h
+	mov a, m
+	sta 2702h
+	inx h
+	mov a, m
+	sta 2703h
+	inx h
+	mov a, m
+	sta 2704h
+	ret
+df:	mov a, m
+	sta 2705h
+	inx h
+	mov a, m
+	sta 2706h
+	ret

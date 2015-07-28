@@ -1,0 +1,99 @@
+	lxi d, 2001h
+	lxi h, 2000h
+	mvi b, 00h
+	lda 2000h
+	mov c, a
+	dad b
+	lxi sp, 2200h
+	call qs
+	hlt
+
+; de is the first elements address
+; hl is the last elements address
+; quick sorts array
+; leaves status intact
+
+qs:	push psw
+	push b
+	push d
+	push h
+	mov a, h
+	cmp d
+	jc end
+	mov a, l
+	cmp e
+	jc end
+	jz end
+	call part ; partitions if lb < ub
+
+	push h
+	mov h, b
+	mov l, c
+	dcx h
+	call qs ; call quick sort on (lb, p-1)
+
+	pop h
+	push d
+	mov d, b
+	mov e, c
+	inx d
+	call qs ; call quick sort on (p+1, ub)
+
+	pop d
+end:	pop h
+	pop d
+	pop b
+	pop psw
+	ret
+
+; de is the first elements address
+; hl is the last elements address
+; returns pivot in bc
+; leaves status intact
+
+part:	push psw
+	push d
+	push h
+	mov b, d ; copy lb to bc
+	mov c, e ; copy lb to bc
+	mov d, h ; copy ub to de
+	mov e, l ; copy ub to de
+	call xbh ; send value to end of array
+	mov h, m ; copy value in h
+	dcx d ; ub -= 1
+loop:	mov a, d
+	cmp b
+	jc endp
+	mov a, e
+	cmp c
+	jc endp
+	ldax b ; if lb <= ub, load array[lb]
+	cmp h ; compare with value
+	jc next
+	mov a, h ; move pivot in accumulator
+	xchg
+	call xbh
+	xchg
+	dcx d
+	mov h, a
+	jmp loop
+next:	inx b
+	jmp loop
+endp:	pop h
+	call xbh
+	pop d
+	pop psw
+	ret
+
+; exchange contents to memory location stored in b and h
+; leave status intact
+
+xbh:	push psw
+	mov a, m
+	push psw
+	ldax b
+	mov m, a
+	pop psw
+	stax b
+	pop psw
+	ret

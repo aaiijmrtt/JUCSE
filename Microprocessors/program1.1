@@ -1,0 +1,17 @@
+	lxi b, 1000h
+	lxi h, 2000h
+	mvi d, 00h
+loop:	xra a
+	add d
+	adc m
+	mov d, a
+	jnc skip
+	inr c
+skip:	inx h
+	dcr b
+	jnz loop
+	mov a, d
+	sta 2100h
+	mov a, c
+	sta 2101h
+	hlt
