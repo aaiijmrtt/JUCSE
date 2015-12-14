@@ -1,0 +1,89 @@
+%include "util.mac"
+
+section .data
+	global aprompt, inprompt, inputnumber, inputarray1, inputarray2, outprompt, newline, tab, apromptsize, inpromptsize, inputnumbersize, iarraysize, outpromptsize, newlinesize, tabsize
+
+	aprompt: db 'ARRAY: '
+	inprompt: db 'INPUT: '
+	inputnumber: db 'INPUT NUMBER: '
+	inputarray1: db 'INPUT COUNT: '
+	inputarray2: db 'INPUT ARRAY: '
+	outprompt: db 'OUTPUT: '
+	newline: db 10
+	tab: db 9
+	apromptsize: equ 7
+	inpromptsize: equ 7
+	inputnumbersize: equ 14
+	iarraysize: equ 13
+	outpromptsize: equ 8
+	newlinesize: equ 1
+	tabsize: equ 1
+
+section .bss
+	global buffer, store, array, arraysize
+
+	buffer: resb 10
+	store: resb 1
+	array: resb 100
+	arraysize: resb 1
+
+section .text
+	global printarray, getnumber, inputarray
+
+printarray:
+	pusha
+	mov ecx, 0
+	mov ebx, 0
+	mov eax, 0
+	mov cl, [arraysize]
+next:
+	mov al, [array + ebx]
+	printword ax, buffer, 2
+	write tab, tabsize
+	inc ebx
+	loop next
+	popa
+	ret
+
+getnumber:
+	pusha
+	read buffer, 1
+	mov eax, 0
+	mov al, [buffer]
+	sub al, 30h
+	mov bl, 10
+	mul bl
+	mov [store], al
+	read buffer, 1
+	mov eax, 0
+	mov al, [buffer]
+	sub al, 30h
+	add al, [store]
+	mov [buffer], al
+	popa
+	ret
+
+inputarray:
+	pusha
+	write inputarray1, iarraysize
+	write newline, newlinesize
+	call getnumber
+	mov eax, 0
+	mov al, [buffer]
+	mov [arraysize], al
+	write newline, newlinesize
+	write inputarray2, iarraysize
+	write newline, newlinesize
+	mov eax, 0
+	mov ebx, 0
+	mov al, [arraysize]
+	mov ecx, eax
+enter:
+	call getnumber
+	mov al, [buffer]
+	mov [array + ebx], al
+	write newline, newlinesize
+	inc ebx
+	loop enter
+	popa
+	ret

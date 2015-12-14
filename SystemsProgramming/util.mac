@@ -1,0 +1,44 @@
+%ifndef UTIL_MAC
+	%define UTIL_MAC
+
+	%macro read 2
+		pusha
+		mov edx, %2
+		mov ecx, %1
+		mov ebx, 0
+		mov eax, 3
+		int 80h
+		popa
+	%endmacro
+
+	%macro write 2
+		pusha
+		mov edx, %2
+		mov ecx, %1
+		mov ebx, 1
+		mov eax, 4
+		int 80h
+		popa
+	%endmacro
+
+	%macro exit 0
+		mov eax, 1
+		mov ebx, 0
+		int 80h
+	%endmacro
+
+	%macro printword 3
+		pusha
+		mov ecx, %3
+		mov ax, %1
+		mov bl, 10
+	%%again:
+		div bl
+		add ah, 30h
+		mov [%2 + ecx - 1], byte ah
+		mov ah, 0
+		loop %%again
+		write %2, %3
+		popa
+	%endmacro
+%endif
