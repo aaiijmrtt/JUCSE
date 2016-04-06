@@ -1,0 +1,37 @@
+program -> functions
+functions -> functions afunction
+functions -> #
+afunction -> datatypes identifiers ( params ) block
+datatypes -> int
+datatypes -> void
+params -> aparam anotherparam
+anotherparam -> , params
+anotherparam -> #
+aparam -> datatypes identifiers
+block -> { statements }
+statements -> statements astatement
+statements -> #
+astatement -> declaration ;
+astatement -> assignment ;
+astatement -> ifstruct
+astatement -> forstruct
+declaration -> datatypes identifiers
+assignment -> identifiers = expression
+ifstruct -> if ( expression ) block elsestruct
+elsestruct -> else block
+elsestruct -> #
+forstruct -> for ( identifiers = expression ; identifiers < expression ; identifiers = expression ) block
+expression -> subexpression
+relop -> <
+relop -> >
+subexpression -> subexpression additive term
+subexpression -> term
+additive -> +
+additive -> -
+term -> term multiplicative factor
+term -> factor
+multiplicative -> *
+multiplicative -> /
+factor -> ( subexpression )
+factor -> identifiers
+factor -> numbers
